@@ -1,0 +1,24 @@
+version: '3.0'
+
+services:
+  video-call-hub-postgres-db:
+    container_name: video-call-hub-postgres-db
+    image: postgres:14
+    env_file:
+      - .dev.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - videocallhub.network
+
+volumes:
+  pgdata:
+
+networks:
+  videocallhub.network:
+    driver: bridge
