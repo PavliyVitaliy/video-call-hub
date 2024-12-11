@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RoomsService } from './rooms.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -12,7 +12,8 @@ export class RoomsController {
 
     @UseGuards(JwtAuthGuard)
     @Post('create')
-    async createRoom(@Body('roomName') roomName: string) {
-        return this.roomsService.createRoom(roomName);
+    async createRoom(@Req() request: any) {
+        const userId = request.user.id; // ID from the token
+        return this.roomsService.createRoom(userId);
     }
 }

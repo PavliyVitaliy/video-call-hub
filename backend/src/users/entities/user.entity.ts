@@ -1,9 +1,12 @@
+import { MessageEntity } from 'src/chat/entities/message.entity';
+import { RoomEntity } from 'src/rooms/entities/room.entity';
 import { 
     Entity,
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    CreateDateColumn
+    CreateDateColumn,
+    OneToMany
 } from 'typeorm';
 
 export const TABLE_Name = 'users';
@@ -34,4 +37,10 @@ export class UserEntity extends BaseEntity {
 
     @CreateDateColumn({ type: 'timestamptz' })
     public createdAt: Date;
+
+    @OneToMany(() => MessageEntity, (message) => message.user)
+    public messages: MessageEntity[];
+
+    @OneToMany(() => RoomEntity, (room) => room.creator)
+    public createdRooms: RoomEntity[];
 }

@@ -1,11 +1,28 @@
-version: '3.0'
+version: "3.0"
 
 services:
+  video-call-hub-backend:
+    container_name: video-call-hub-backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend:/code/backend
+    depends_on:
+      - video-call-hub-postgres-db
+    restart: always
+    networks:
+      - videocallhub.network
+
   video-call-hub-postgres-db:
     container_name: video-call-hub-postgres-db
     image: postgres:14
     env_file:
-      - .dev.env
+      - backend/.env
     environment:
       PG_DATA: /var/lib/postgresql/data
     ports:
